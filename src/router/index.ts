@@ -6,6 +6,7 @@ import About from '@/pages/About.vue'
 import News from '@/pages/News.vue'
 import Detail from '@/pages/Detail.vue'
 import Notes from '@/pages/Notes.vue'
+import Job from '@/pages/Job.vue'
 
 
 const router = createRouter({
@@ -18,6 +19,10 @@ const router = createRouter({
         {
             path:'/notes',
             component:Notes
+        },
+        {
+            path:'/Job',
+            component:Job
         },
         {
             name:'xinwen',
