@@ -1,7 +1,13 @@
 <template>
   <div>
     <h1>查询用户（根据用户名或昵称查询）</h1>
-    <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
+<div class="container">
+    
+    <div class="pagination-buttons">
+      <button @click="prevPage">上一页</button>
+      <button @click="nextPage">下一页</button>
+    </div>
+    <div class="searchbar">
       <select v-model="searchType" style="margin-right: 10px;">
         <option value="username">用户名</option>
         <option value="nickname">用户昵称</option>
@@ -9,6 +15,8 @@
       <input v-model="searchValue" placeholder="请输入搜索内容" style="margin-right: 10px;" />
       <button @click="handleSearch">搜索</button>
     </div>
+  </div>
+  <br>
     <a-table
       :columns="columns"
       :data-source="dataSource"
@@ -18,6 +26,8 @@
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'operation'">
           <button @click="handleDetails(record)">详情</button>
+          <br>
+          <hr>
           <button @click="changeStatus(record, '正常')">正常</button>
           <button @click="changeStatus(record, '禁用')">禁用</button>
         </template>
@@ -115,7 +125,7 @@ export default defineComponent({
         title: "操作",
         key: "operation",
         fixed: "right",
-        width: 200,
+        width: 50,
         resizable: true,
         align: "center"
       }
@@ -137,6 +147,7 @@ export default defineComponent({
       gender: "",
       school: ""
     });
+    const currentPage = ref(1);
 
     const fetchData = async (searchType: string, searchValue: string) => {
       try {
@@ -147,7 +158,7 @@ export default defineComponent({
             token: token
           },
           params: {
-            page: 1,
+            page: currentPage.value,
             pageSize: 10,
             [searchType]: searchValue
           }
@@ -233,26 +244,55 @@ export default defineComponent({
       isModalVisible.value = false;
     };
 
-    onMounted(() => fetchData(searchType.value, searchValue.value));
-
-    return {
-      dataSource,
-      columns,
-      handleDetails,
-      handleSearch,
-      searchType,
-      searchValue,
-      isModalVisible,
-      userDetails,
-      handleOk,
-      handleCancel,
-      loading,
-      changeStatus
+    const prevPage = () => {
+      if (currentPage.value > 1) {
+        currentPage.value -= 1;
+        fetchData(searchType.value, searchValue.value);
+      }
     };
-  }
+
+    const nextPage = () => {
+currentPage.value += 1;
+fetchData(searchType.value, searchValue.value);
+};
+onMounted(() => fetchData(searchType.value, searchValue.value));
+
+return {
+  dataSource,
+  columns,
+  handleDetails,
+  handleSearch,
+  searchType,
+  searchValue,
+  isModalVisible,
+  userDetails,
+  handleOk,
+  handleCancel,
+  loading,
+  changeStatus,
+  prevPage,
+  nextPage
+};
+}
 });
 </script>
 
+
 <style scoped>
-/* 自定义样式 */
+.container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.cpagination-buttons {
+  display: flex;
+  gap: 10px;
+}
+.searchbar{
+  display: flex;
+  gap: 10px;
+}
+
 </style>
+
