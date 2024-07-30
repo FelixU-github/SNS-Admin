@@ -10,6 +10,7 @@
     <a-button type="text"><RouterLink to="/posts" class="active"> 博文管理 </RouterLink></a-button>
     <a-button type="text"><RouterLink to="/comments" class="active"> 评论管理 </RouterLink></a-button>
     <a-button type="text"><RouterLink to="/activity" class="active"> 活动管理 </RouterLink></a-button>
+    <a-button type="text"><RouterLink to="/job" class="active"> 内推管理 </RouterLink></a-button>
     <a-button type="text"><RouterLink to="/notes"> 公告管理 </RouterLink></a-button>
     <div class="separator"></div> <!-- 添加竖线的元素 -->
     <avatar />
@@ -70,7 +71,7 @@
     /* box-shadow: 0 0 10px; */
     width: 100%;
     height: 800px;
-    background-color: rgb(191, 191, 191);
+    background-color: rgb(255, 255, 255);
     
 }
 .header{
