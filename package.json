@@ -11,6 +11,7 @@
     "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
+    "@ant-design/icons-vue": "^7.0.1",
     "@surely-vue/table": "^4.3.5",
     "ant-design-vue": "^4.2.3",
     "axios": "^1.7.2",
