@@ -1,0 +1,38 @@
+{
+  "name": "vue-project-learn-1",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "run-p type-check \"build-only {@}\" --",
+    "preview": "vite preview",
+    "build-only": "vite build",
+    "type-check": "vue-tsc --build --force"
+  },
+  "dependencies": {
+    "@surely-vue/table": "^4.3.5",
+    "ant-design-vue": "^4.2.3",
+    "axios": "^1.7.2",
+    "echarts": "^5.5.1",
+    "element": "^0.1.4",
+    "element-plus": "^2.7.8",
+    "plus": "^0.1.0",
+    "vite-plugin-vue-setup-extend": "^0.4.0",
+    "vue": "^3.4.34",
+    "vue-router": "^4.4.0"
+  },
+  "devDependencies": {
+    "@tsconfig/node20": "^20.1.4",
+    "@types/node": "^20.14.13",
+    "@vitejs/plugin-vue": "^5.1.1",
+    "@vue/tsconfig": "^0.5.1",
+    "npm-run-all2": "^6.2.2",
+    "typescript": "~5.4.5",
+    "unplugin-auto-import": "^0.18.2",
+    "unplugin-vue-components": "^0.27.3",
+    "vite": "^5.3.5",
+    "vite-plugin-style-import": "^2.0.0",
+    "vue-tsc": "^2.0.29"
+  }
+}
