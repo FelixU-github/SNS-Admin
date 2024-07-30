@@ -1,4 +1,6 @@
 <template>
+
+  
     <div class="person">
         <div id="main" style="width: 50%; height: 400px;">
 

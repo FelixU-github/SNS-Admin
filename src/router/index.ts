@@ -2,23 +2,51 @@
 
 import {createRouter,createWebHistory} from 'vue-router'
 import Home from '@/pages/Home.vue'
-import About from '@/pages/About.vue'
+import Users from '@/pages/Users.vue'
 import News from '@/pages/News.vue'
 import Detail from '@/pages/Detail.vue'
 import Notes from '@/pages/Notes.vue'
+import Job from '@/pages/Job.vue'
+import Posts from '@/pages/Posts.vue'
+import Comments from '@/pages/Comments.vue'
+import Acitivity from '@/pages/Acitivity.vue'
 
 
 const router = createRouter({
     history:createWebHistory(),
     routes :[
         {
-            path:'/home',
+            path:'/Home',
             component:Home
         },
         {
             path:'/notes',
             component:Notes
         },
+        {
+            path:'/Job',
+            component:Job
+        },
+        {
+            path:'/Posts',
+            component:Posts
+        },
+
+        {
+            path:'/Comments',
+            component:Comments
+        },
+
+        {
+            path:'/Activity',
+            component:Acitivity
+        },
+
+        {
+            path:'/users',
+            component: Users
+        },
+
         {
             name:'xinwen',
             path:'/news',
@@ -30,10 +58,7 @@ const router = createRouter({
                 }
             ]
         },
-        {
-            path:'/about',
-            component:About
-        },
+       
     ]
     
 })
