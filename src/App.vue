@@ -16,7 +16,7 @@
   <!--  展示区 -->
   <div class="main-contant">
      
-      <RouterView class="router-view"></RouterView>
+      <RouterView></RouterView>
     
   </div>
 </template>

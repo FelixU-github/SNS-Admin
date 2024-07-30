@@ -2,7 +2,7 @@
     <div>
       <h1>测试查询用户功能</h1>
     </div>
-    <a-table
+    <!-- <a-table
       :columns="columns"
       :data-source="dataSource"
       :pagination="{ pageSize: 10 }"
@@ -13,7 +13,7 @@
           <button @click="handleDetails(record)">详情</button>
         </template>
       </template>
-    </a-table>
+    </a-table> -->
   </template>
   
   <script lang="ts">

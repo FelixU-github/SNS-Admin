@@ -1,9 +1,10 @@
 <template>
     <div>
-      <h1>这是公告页面</h1>
+      <NotesTable/>
     </div>
   </template>
   
-  <script>
-  
+  <script setup>
+  import NotesTable from '@/componments/NotesTable.vue';
+
   </script>
