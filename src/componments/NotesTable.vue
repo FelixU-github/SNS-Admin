@@ -85,7 +85,7 @@
     title: '标题',
     content: '内容333',
     create_time: '2023-05-05',
-  },
+  }
 ]);
 
 </script>
