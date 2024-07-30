@@ -10,6 +10,7 @@
     <RouterLink to="/home" active-class=""> Home </RouterLink>
     <RouterLink to="/news" class="active"> News </RouterLink>
     <RouterLink to="/about" class="active"> About </RouterLink>
+    <RouterLink to="/notes" class="active"> Notes </RouterLink>
   </div>
   <hr>
   <!--  展示区 -->
@@ -29,9 +30,9 @@
 
 <style>
 .app{
-    background-color: skyblue;
+    background-color: rgb(231, 232, 233);
     box-shadow: 0 0 10px;
-    border-radius: 10px;
+    /* border-radius: 10px; */
     padding: 20px;
 }
 

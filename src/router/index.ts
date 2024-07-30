@@ -5,6 +5,7 @@ import Home from '@/pages/Home.vue'
 import About from '@/pages/About.vue'
 import News from '@/pages/News.vue'
 import Detail from '@/pages/Detail.vue'
+import Notes from '@/pages/Notes.vue'
 
 
 const router = createRouter({
@@ -13,6 +14,10 @@ const router = createRouter({
         {
             path:'/home',
             component:Home
+        },
+        {
+            path:'/notes',
+            component:Notes
         },
         {
             name:'xinwen',
