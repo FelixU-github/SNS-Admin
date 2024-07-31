@@ -1,4 +1,10 @@
 <template>
+  <div class="dashboard-container">
+    <div class="header">
+      <h3>用户管理台</h3>
+    </div>
+  
+  
   <div>
     <div class="container">
       <div class="searchbar">
@@ -44,6 +50,7 @@
       <p>学校: {{ userDetails.school }}</p>
     </a-modal>
   </div>
+</div>
 
 </template>
 
@@ -321,4 +328,13 @@ export default defineComponent({
   justify-content: space-evenly;
 
 }
+
+.dashboard-container {
+  border: 2px solid #ccc; /* 添加边框 */
+  background-color: #ffffff; /* 添加背景色 */
+  padding: 20px; /* 添加内边距 */
+  border-radius: 10px; /* 添加圆角 */
+}
+
+
 </style>
