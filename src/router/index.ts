@@ -10,6 +10,8 @@ import Job from '@/pages/Job.vue'
 import Posts from '@/pages/Posts.vue'
 import Comments from '@/pages/Comments.vue'
 import Acitivity from '@/pages/Acitivity.vue'
+import Resource from '@/pages/Resource.vue'
+import Surprise from '@/pages/Surprise.vue'
 
 
 const router = createRouter({
@@ -19,6 +21,11 @@ const router = createRouter({
             path:'/Home',
             component:Home
         },
+        {
+            path:'/',
+            component:Home
+        },
+
         {
             path:'/notes',
             component:Notes
@@ -46,6 +53,15 @@ const router = createRouter({
             path:'/users',
             component: Users
         },
+        {
+            path:'/resource',
+            component: Resource
+        },
+        {
+            path:'/surprise',
+            component: Surprise
+        },
+
 
         {
             name:'xinwen',
