@@ -1,5 +1,5 @@
 <template>
-    <div id="main" style="width: 100%; height: 100%;"></div>
+    <div id="main-1" style="width: 100%; height: 100%;"></div>
 </template>
 
 <script setup>
@@ -30,7 +30,7 @@ const fetchData = async () => {
 };
 
 onMounted(async () => {
-    const chartDom = document.getElementById('main');
+    const chartDom = document.getElementById('main-1');
     const myChart = echarts.init(chartDom);
 
     const data = await fetchData();
@@ -40,7 +40,7 @@ onMounted(async () => {
 
     const option = {
         title: {
-            text: '近七天新增用户数量'
+            text: '          本周新增用户数量 (实时数据)'
         },
         xAxis: {
             type: 'category',
@@ -67,7 +67,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-#main {
+#main-1 {
     width: 100%;
     height: 400px;
 }

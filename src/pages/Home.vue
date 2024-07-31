@@ -10,19 +10,26 @@
       </div>
       <div class="lineChart">
         <MyChart />
+        <!-- <Zouma /> -->
       </div>
     </div>
     <br>
     <div class="charts-container-2">
       <div class="lineChart-2">
+        <DataChart />
       </div>
     </div>
   </div>
+  <float-button />
 </template>
 
 <script setup>
 import LineChart from "@/componments/LineChart.vue";
 import MyChart from "@/componments/MyChart.vue";
+import FloatButton from "@/componments/FloatButton.vue";
+import { Carousel } from "ant-design-vue";
+import Zouma  from "@/componments/Zouma.vue";
+import DataChart from "@/componments/DataChart.vue";
 
 
 </script>
@@ -53,23 +60,24 @@ h2 {
   
 }
 
+
 .lineChart {
   flex: 1; /* 图表等分容器 */
-  height: 400px; /* 控制图表高度 */
+  height: 300px; /* 控制图表高度 */
   border: 2px solid #ccc; /* 添加边框 */
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* 添加阴影 */
   border-radius: 20px; /* 添加圆角 */
   padding: 20px; /* 控制内边距 */
-  background-color: #ffffff; /* 添加背景色 */
+  background-color: #f6f7f3; /* 添加背景色 */
 }
 
 .lineChart-2 {
   flex: 1; /* 图表等分容器 */
-  height: 400px; /* 控制图表高度 */
+  height: 100%; /* 控制图表高度 */
   border: 2px solid #ccc; /* 添加边框 */
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* 添加阴影 */
   border-radius: 20px; /* 添加圆角 */
   padding: 20px; /* 控制内边距 */
-  background-color: #ffffff; /* 添加背景色 */
+  background-color: #f6f2f2; /* 添加背景色 */
 }
 </style>

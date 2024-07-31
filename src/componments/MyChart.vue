@@ -18,7 +18,7 @@ const fetchData = async () => {
 
       if (response.data.code === 200) {
           const data = response.data.data;
-          return data.slice(-7);
+          return data.slice(-30);
       } else {
           console.error('获取数据失败:', response.data.msg);
           return [];
@@ -40,7 +40,7 @@ onMounted(async () => {
 
   const option = {
       title: {
-          text: '近七天新增用户数量'
+          text: '          本月新增用户数量（实时数据）'
       },
       xAxis: {
           type: 'category',
