@@ -22,6 +22,11 @@ const router = createRouter({
             component:Home
         },
         {
+            path:'/',
+            component:Home
+        },
+
+        {
             path:'/notes',
             component:Notes
         },
@@ -56,6 +61,7 @@ const router = createRouter({
             path:'/surprise',
             component: Surprise
         },
+
 
         {
             name:'xinwen',

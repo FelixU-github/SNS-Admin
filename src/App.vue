@@ -2,7 +2,7 @@
   <!-- 导航 -->
   <div class="navigate">
     <a-button type="text" class="title-button-t">
-      <RouterLink to="/home" class="title-link-t" active-class="active-t"> 树洞后台管理系统 </RouterLink>
+      <RouterLink to="/" class="title-link-t" active-class="active-t"> 树洞后台管理系统 </RouterLink>
     </a-button>
 
     <div class="separator"></div> <!-- 添加竖线的元素 -->
