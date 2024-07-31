@@ -3,16 +3,16 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted ,inject} from 'vue';
 import * as echarts from 'echarts';
 import axios from 'axios';
-
+const token = inject('token');
 const fetchData = async () => {
   try {
-      const token = "eyJ0eXAiOiJ0b2tlbiIsImFsZyI6IkhTNTEyIn0.eyJzdWIiOiI5IiwiaWF0IjoxNzIyMjc0ODM5LCJleHAiOjE3MjI4Nzk2Mzl9.Jw2sno033CsgO75s5S9vWtbtG4hg2sA4EXjw2faJQnmnVKEm68jZHSHSgui1BwxtcgqB0rcHw96RcirmBEj09A";
+     
       const response = await axios.get('/tag/api/admin/users/sum/daily', {
           headers: {
-              token: token
+              token: token.value
           }
       });
 
