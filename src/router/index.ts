@@ -11,6 +11,7 @@ import Posts from '@/pages/Posts.vue'
 import Comments from '@/pages/Comments.vue'
 import Acitivity from '@/pages/Acitivity.vue'
 import Resource from '@/pages/Resource.vue'
+import Surprise from '@/pages/Surprise.vue'
 
 
 const router = createRouter({
@@ -50,6 +51,10 @@ const router = createRouter({
         {
             path:'/resource',
             component: Resource
+        },
+        {
+            path:'/surprise',
+            component: Surprise
         },
 
         {

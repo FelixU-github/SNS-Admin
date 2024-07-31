@@ -34,7 +34,10 @@
       <avatar />
       <p></p>
     </div>
-    <a-button type="text" active-class="active">退出</a-button>
+    <a-button type="text" class="title-button">
+      <RouterLink to="/surprise" class="title-link" active-class="active"> 退出 </RouterLink>
+    </a-button>
+
   </div>
 
   <div class="spcae">

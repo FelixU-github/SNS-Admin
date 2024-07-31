@@ -22,7 +22,7 @@
           <div class="operation-buttons">
             <button @click="handleDetails(record)">详情</button>
             <button @click="changeStatus(record, '正常')">正常</button>
-            <button @click="changeStatus(record, '禁用')">禁用</button>
+            <button @click="changeStatus(record, '删除')">删除</button>
           </div>
         </template>
         <template v-else-if="column.key === 'avatar'">
@@ -55,15 +55,19 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
 import axios from "axios";
-import selector from "echarts/types/src/component/brush/selector.js";
+
 
 interface DataItem {
-  key: number;
-  userId: number;
-  username: string;
-  nickname: string;
-  avatar: string;
+  postId: number;
+  uid: number;
+  categoryName: string;
+  title: string;
+  content: string;
+  readCount: number;
+  postTop: string;
+  createTime: string;
   status: string;
+  nickname: string;
 }
 
 interface UserDetails {
@@ -83,27 +87,18 @@ export default defineComponent({
   setup() {
     const columns = ref([
       {
-        title: "用户ID",
-        dataIndex: "userId",
-        key: "userId",
+        title: "博文id",
+        dataIndex: "postId",
+        key: "postId",
         fixed: "left",
         width: 100,
         resizable: true,
         align: "center"
       },
       {
-        title: "头像",
-        key: "avatar",
-        dataIndex: "avatar",
-        width: 100,
-        resizable: false,
-        align: "center"
-      },
-      {
-        title: "用户名",
-        dataIndex: "username",
-        key: "username",
-        fixed: "left",
+        title: "用户id",
+        dataIndex: "uid",
+        key: "uid",
         width: 100,
         resizable: false,
         align: "center"
@@ -117,9 +112,51 @@ export default defineComponent({
         align: "center"
       },
       {
-        title: "用户状态",
-        key: "status",
+        title: "博文分类",
+        dataIndex: "categoryName",
+        key: "categoryName",
+        width: 100,
+        resizable: false,
+        align: "center"
+      },
+      {
+        title: "博文标题",
+        dataIndex: "title",
+        key: "title",
+        width: 150,
+        resizable: false,
+        align: "center"
+      },
+      {
+        title: "博文内容",
+        dataIndex: "content",
+        key: "content",
+        width: 200,
+        resizable: false,
+        align: "center"
+      },
+      {
+        title: "阅读量",
+        dataIndex: "readCount",
+        key: "readCount",
+        width: 100,
+        resizable: false,
+        align: "center"
+
+      },
+
+      {
+        title: "创建时间",
+        dataIndex: "createTime",
+        key: "createTime",
+        width: 150,
+        resizable: false,
+        align: "center"
+      },
+      {
+        title: "博文状态",
         dataIndex: "status",
+        key: "status",
         width: 100,
         resizable: false,
         align: "center"
@@ -163,7 +200,7 @@ export default defineComponent({
       loading.value = true;
       try {
         const token = "eyJ0eXAiOiJ0b2tlbiIsImFsZyI6IkhTNTEyIn0.eyJzdWIiOiI5IiwiaWF0IjoxNzIyMjc0ODM5LCJleHAiOjE3MjI4Nzk2Mzl9.Jw2sno033CsgO75s5S9vWtbtG4hg2sA4EXjw2faJQnmnVKEm68jZHSHSgui1BwxtcgqB0rcHw96RcirmBEj09A";
-        const response = await axios.get("/tag/api/admin/users", {
+        const response = await axios.get("/tag/api/admin/post", {
           headers: {
             token: token
           },
@@ -176,12 +213,17 @@ export default defineComponent({
         const { code, data, msg } = response.data;
         if (code === 200) {
           dataSource.value = data.rows.map((row: any) => ({
-            key: row.userId,
-            userId: row.userId,
-            username: row.username,
-            nickname: row.nickname,
-            avatar: row.avatar,
-            status: +row.status === 0 ? '正常' : +row.status === 1 ? '禁用' : +row.status === 2 ? '已删除' : '未知状态'
+            postId: row.postId,
+            uid: row.uid,
+            categoryName: row.categoryName,
+            title: row.title,
+            content: row.content,
+            readCount: row.readCount,
+            postTop: row.postTop,
+            createTime: row.createTime,
+            status: row.status,
+            nickname: row.nickname
+
           }));
           pagination.value.total = data.total;
         } else {
@@ -194,10 +236,10 @@ export default defineComponent({
       }
     };
 
-    const fetchUserDetails = async (userId: number) => {
+    const fetchUserDetails = async (postId: number) => {
       try {
         const token = "eyJ0eXAiOiJ0b2tlbiIsImFsZyI6IkhTNTEyIn0.eyJzdWIiOiI5IiwiaWF0IjoxNzIyMjc0ODM5LCJleHAiOjE3MjI4Nzk2Mzl9.Jw2sno033CsgO75s5S9vWtbtG4hg2sA4EXjw2faJQnmnVKEm68jZHSHSgui1BwxtcgqB0rcHw96RcirmBEj09A";
-        const response = await axios.get(`/tag/api/admin/users/${userId}`, {
+        const response = await axios.get(`/tag/api/admin/users/${postId}`, {
           headers: {
             token: token
           }
@@ -216,12 +258,12 @@ export default defineComponent({
     const changeStatus = async (record: DataItem, status: string) => {
       try {
         const token = "eyJ0eXAiOiJ0b2tlbiIsImFsZyI6IkhTNTEyIn0.eyJzdWIiOiI5IiwiaWF0IjoxNzIyMjc0ODM5LCJleHAiOjE3MjI4Nzk2Mzl9.Jw2sno033CsgO75s5S9vWtbtG4hg2sA4EXjw2faJQnmnVKEm68jZHSHSgui1BwxtcgqB0rcHw96RcirmBEj09A";
-        const response = await axios.put(`/tag/api/admin/users`, null, {
+        const response = await axios.put(`/tag/api/admin/post`,null, {
           headers: {
             token: token
           },
           params: {
-            userId: record.userId,
+            postId: record.postId,
             status: status
           }
         });
@@ -237,11 +279,12 @@ export default defineComponent({
     };
 
     const handleSearch = () => {
+      pagination.value.current = 1; // 重置到第一页
       fetchData(searchType.value, searchValue.value);
     };
 
     const handleDetails = (record: DataItem) => {
-      fetchUserDetails(record.userId);
+      fetchUserDetails(record.postId);
       isModalVisible.value = true;
     };
 
