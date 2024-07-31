@@ -13,7 +13,10 @@
     <a-button type="text"><RouterLink to="/job" class="active"> 内推管理 </RouterLink></a-button>
     <a-button type="text"><RouterLink to="/notes"> 公告管理 </RouterLink></a-button>
     <div class="separator"></div> <!-- 添加竖线的元素 -->
-    <avatar />
+    <div class="box">
+      <avatar />
+      <p>123</p>
+    </div>
     <a-button type="text">退出</a-button>
   </div>
   <div class="spcae">
@@ -84,7 +87,10 @@
   background-color: #000; /* 竖线的颜色，可以根据需要调整 */
   margin-right: 20px; /* 给按钮留出空间 */
 }
-
+.box {
+  display: flex;
+  flex-wrap: wrap;
+}
 
 </style>
 

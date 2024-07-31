@@ -1,44 +1,37 @@
 <template>
   <div>
-    <h1>查询用户（根据用户名或昵称查询）</h1>
-<div class="container">
-    
-    <div class="pagination-buttons">
-      <button @click="prevPage">上一页</button>
-      <button @click="nextPage">下一页</button>
+    <div class="container">
+      <div class="searchbar">
+        <select v-model="searchType" style="margin-right: 10px;">
+          <option value="username">用户名</option>
+          <option value="nickname">用户昵称</option>
+        </select>
+        <input v-model="searchValue" placeholder="请输入搜索内容" style="margin-right: 10px;" />
+        <button @click="handleSearch">搜索</button>
+      </div>
     </div>
-    <div class="searchbar">
-      <select v-model="searchType" style="margin-right: 10px;">
-        <option value="username">用户名</option>
-        <option value="nickname">用户昵称</option>
-      </select>
-      <input v-model="searchValue" placeholder="请输入搜索内容" style="margin-right: 10px;" />
-      <button @click="handleSearch">搜索</button>
+    <div class="container">
+      <p>查询用户（根据用户名或昵称查询）</p>
     </div>
-  </div>
-  <br>
-    <a-table
-      :columns="columns"
-      :data-source="dataSource"
-      :pagination="{ pageSize: 10 }"
-      :scroll="{ y: 500, x: 100 }"
-    >
+    <br>
+    <!-- 这里是表格 -->
+    <a-table :columns="columns" :data-source="dataSource" :pagination="pagination" :loading="loading"
+      :scroll="{ y: 500, x: 100 }" @change="handleTableChange">
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'operation'">
-          <button @click="handleDetails(record)">详情</button>
-          <br>
-          <hr>
-          <button @click="changeStatus(record, '正常')">正常</button>
-          <button @click="changeStatus(record, '禁用')">禁用</button>
+          <div class="operation-buttons">
+            <button @click="handleDetails(record)">详情</button>
+            <button @click="changeStatus(record, '正常')">正常</button>
+            <button @click="changeStatus(record, '禁用')">禁用</button>
+          </div>
+        </template>
+        <template v-else-if="column.key === 'avatar'">
+          <img :src="record.avatar" alt="avatar" style="width: 50px; height: 50px;" />
         </template>
       </template>
     </a-table>
-    <a-modal
-      v-model:visible="isModalVisible"
-      title="用户详情"
-      @ok="handleOk"
-      @cancel="handleCancel"
-    >
+
+    <a-modal v-model:visible="isModalVisible" title="用户详情" @ok="handleOk" @cancel="handleCancel">
       <p>用户ID: {{ userDetails.userId }}</p>
       <p>用户名: {{ userDetails.username }}</p>
       <p>用户昵称: {{ userDetails.nickname }}</p>
@@ -51,11 +44,18 @@
       <p>学校: {{ userDetails.school }}</p>
     </a-modal>
   </div>
+
+  <!-- <div class="pagination-buttons">
+    <button @click="prevPage">上一页</button>
+    <button @click="nextPage">下一页</button>
+  </div> -->
 </template>
+
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
 import axios from "axios";
+import selector from "echarts/types/src/component/brush/selector.js";
 
 interface DataItem {
   key: number;
@@ -85,7 +85,16 @@ export default defineComponent({
       {
         title: "用户ID",
         dataIndex: "userId",
+        key: "userId",
         fixed: "left",
+        width: 100,
+        resizable: true,
+        align: "center"
+      },
+      {
+        title: "头像",
+        key: "avatar",
+        dataIndex: "avatar",
         width: 100,
         resizable: false,
         align: "center"
@@ -93,6 +102,7 @@ export default defineComponent({
       {
         title: "用户名",
         dataIndex: "username",
+        key: "username",
         fixed: "left",
         width: 100,
         resizable: false,
@@ -102,13 +112,6 @@ export default defineComponent({
         title: "用户昵称",
         dataIndex: "nickname",
         key: "nickname",
-        width: 100,
-        resizable: false
-      },
-      {
-        title: "头像",
-        key: "avatar",
-        dataIndex: "avatar",
         width: 100,
         resizable: false,
         align: "center"
@@ -125,7 +128,7 @@ export default defineComponent({
         title: "操作",
         key: "operation",
         fixed: "right",
-        width: 50,
+        width: 150,
         resizable: true,
         align: "center"
       }
@@ -147,19 +150,26 @@ export default defineComponent({
       gender: "",
       school: ""
     });
-    const currentPage = ref(1);
+    const pagination = ref({
+      current: 1,
+      pageSize: 8,
+      total: 0,
+      showTotal: (total: number) => `总共 ${total} 条`,
+      showQuickJumper: true,
+      showSizeChanger: false
+    });
 
     const fetchData = async (searchType: string, searchValue: string) => {
+      loading.value = true;
       try {
-        const token =
-          "eyJ0eXAiOiJ0b2tlbiIsImFsZyI6IkhTNTEyIn0.eyJzdWIiOiI5IiwiaWF0IjoxNzIyMjc0ODM5LCJleHAiOjE3MjI4Nzk2Mzl9.Jw2sno033CsgO75s5S9vWtbtG4hg2sA4EXjw2faJQnmnVKEm68jZHSHSgui1BwxtcgqB0rcHw96RcirmBEj09A";
+        const token = "eyJ0eXAiOiJ0b2tlbiIsImFsZyI6IkhTNTEyIn0.eyJzdWIiOiI5IiwiaWF0IjoxNzIyMjc0ODM5LCJleHAiOjE3MjI4Nzk2Mzl9.Jw2sno033CsgO75s5S9vWtbtG4hg2sA4EXjw2faJQnmnVKEm68jZHSHSgui1BwxtcgqB0rcHw96RcirmBEj09A";
         const response = await axios.get("/tag/api/admin/users", {
           headers: {
             token: token
           },
           params: {
-            page: currentPage.value,
-            pageSize: 10,
+            page: pagination.value.current,
+            pageSize: pagination.value.pageSize,
             [searchType]: searchValue
           }
         });
@@ -173,6 +183,7 @@ export default defineComponent({
             avatar: row.avatar,
             status: +row.status === 0 ? '正常' : +row.status === 1 ? '禁用' : +row.status === 2 ? '已删除' : '未知状态'
           }));
+          pagination.value.total = data.total;
         } else {
           console.error("获取数据失败:", code, msg);
         }
@@ -185,8 +196,7 @@ export default defineComponent({
 
     const fetchUserDetails = async (userId: number) => {
       try {
-        const token =
-          "eyJ0eXAiOiJ0b2tlbiIsImFsZyI6IkhTNTEyIn0.eyJzdWIiOiI5IiwiaWF0IjoxNzIyMjc0ODM5LCJleHAiOjE3MjI4Nzk2Mzl9.Jw2sno033CsgO75s5S9vWtbtG4hg2sA4EXjw2faJQnmnVKEm68jZHSHSgui1BwxtcgqB0rcHw96RcirmBEj09A";
+        const token = "eyJ0eXAiOiJ0b2tlbiIsImFsZyI6IkhTNTEyIn0.eyJzdWIiOiI5IiwiaWF0IjoxNzIyMjc0ODM5LCJleHAiOjE3MjI4Nzk2Mzl9.Jw2sno033CsgO75s5S9vWtbtG4hg2sA4EXjw2faJQnmnVKEm68jZHSHSgui1BwxtcgqB0rcHw96RcirmBEj09A";
         const response = await axios.get(`/tag/api/admin/users/${userId}`, {
           headers: {
             token: token
@@ -205,8 +215,7 @@ export default defineComponent({
 
     const changeStatus = async (record: DataItem, status: string) => {
       try {
-        const token =
-          "eyJ0eXAiOiJ0b2tlbiIsImFsZyI6IkhTNTEyIn0.eyJzdWIiOiI5IiwiaWF0IjoxNzIyMjc0ODM5LCJleHAiOjE3MjI4Nzk2Mzl9.Jw2sno033CsgO75s5S9vWtbtG4hg2sA4EXjw2faJQnmnVKEm68jZHSHSgui1BwxtcgqB0rcHw96RcirmBEj09A";
+        const token = "eyJ0eXAiOiJ0b2tlbiIsImFsZyI6IkhTNTEyIn0.eyJzdWIiOiI5IiwiaWF0IjoxNzIyMjc0ODM5LCJleHAiOjE3MjI4Nzk2Mzl9.Jw2sno033CsgO75s5S9vWtbtG4hg2sA4EXjw2faJQnmnVKEm68jZHSHSgui1BwxtcgqB0rcHw96RcirmBEj09A";
         const response = await axios.put(`/tag/api/admin/users`, null, {
           headers: {
             token: token
@@ -228,6 +237,7 @@ export default defineComponent({
     };
 
     const handleSearch = () => {
+      pagination.value.current = 1; // 重置到第一页
       fetchData(searchType.value, searchValue.value);
     };
 
@@ -244,55 +254,76 @@ export default defineComponent({
       isModalVisible.value = false;
     };
 
+    const handleTableChange = (paginationConfig: any) => {
+      pagination.value.current = paginationConfig.current;
+      fetchData(searchType.value, searchValue.value);
+    };
+
     const prevPage = () => {
-      if (currentPage.value > 1) {
-        currentPage.value -= 1;
+      if (pagination.value.current > 1) {
+        pagination.value.current -= 1;
         fetchData(searchType.value, searchValue.value);
       }
     };
 
     const nextPage = () => {
-currentPage.value += 1;
-fetchData(searchType.value, searchValue.value);
-};
-onMounted(() => fetchData(searchType.value, searchValue.value));
+      if (pagination.value.current < Math.ceil(pagination.value.total / pagination.value.pageSize)) {
+        pagination.value.current += 1;
+        fetchData(searchType.value, searchValue.value);
+      }
+    };
 
-return {
-  dataSource,
-  columns,
-  handleDetails,
-  handleSearch,
-  searchType,
-  searchValue,
-  isModalVisible,
-  userDetails,
-  handleOk,
-  handleCancel,
-  loading,
-  changeStatus,
-  prevPage,
-  nextPage
-};
-}
+    onMounted(() => fetchData(searchType.value, searchValue.value));
+
+    return {
+      dataSource,
+      columns,
+      handleDetails,
+      handleSearch,
+      searchType,
+      searchValue,
+      isModalVisible,
+      userDetails,
+      handleOk,
+      handleCancel,
+      loading,
+      changeStatus,
+      pagination,
+      handleTableChange,
+      prevPage,
+      nextPage
+    };
+  }
 });
+
 </script>
 
 
 <style scoped>
 .container {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   margin-top: 10px;
+
 }
 
-.cpagination-buttons {
+.pagination-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  width: 100%;
+  margin-left: auto;
+  padding-right: 20px;
+}
+
+.searchbar {
   display: flex;
   gap: 10px;
 }
-.searchbar{
-  display: flex;
-  gap: 10px;
-}
 
+.operation-buttons {
+  display: flex;
+  justify-content: space-evenly;
+
+}
 </style>
-
