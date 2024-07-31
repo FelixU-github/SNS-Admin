@@ -1,8 +1,9 @@
 <template>
   <div class="dashboard-container">
     <div class="header">
-      <h3>用户管理台</h3>
+      <h3>用户管理台 查询用户（根据用户名或昵称查询）</h3>
     </div>
+    <hr>
   
   
   <div>
@@ -15,10 +16,11 @@
         <input v-model="searchValue" placeholder="请输入搜索内容" style="margin-right: 10px;" />
         <button @click="handleSearch">搜索</button>
       </div>
+      
     </div>
-    <div class="container">
+    <!-- <div class="container">
       <p>查询用户（根据用户名或昵称查询）</p>
-    </div>
+    </div> -->
     <br>
     <!-- 这里是表格 -->
     <a-table :columns="columns" :data-source="dataSource" :pagination="pagination" :loading="loading"
