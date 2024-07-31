@@ -69,7 +69,7 @@
   padding: 50px; /* 为容器添加左右内边距（可选） */
   height: 70px; /* 设置容器高度以示例效果 */
   box-shadow: 0 0 10px;
-  background-color: rgba(239, 246, 255, 0.435);
+  background-color: rgb(250, 251, 252);
 
 }
 
