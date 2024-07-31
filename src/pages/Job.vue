@@ -10,7 +10,7 @@
     <div class="container">
       <div class="searchbar">
         <select v-model="searchType" style="margin-right: 10px;">
-          <option value="title">博文标题</option>
+          <option value="title">内推 id</option>
           <option value="nickname">用户昵称</option>
         </select>
         <input v-model="searchValue" placeholder="请输入搜索内容" style="margin-right: 10px;" />
@@ -200,7 +200,7 @@ export default defineComponent({
       loading.value = true;
       try {
         const token = "eyJ0eXAiOiJ0b2tlbiIsImFsZyI6IkhTNTEyIn0.eyJzdWIiOiI5IiwiaWF0IjoxNzIyMjc0ODM5LCJleHAiOjE3MjI4Nzk2Mzl9.Jw2sno033CsgO75s5S9vWtbtG4hg2sA4EXjw2faJQnmnVKEm68jZHSHSgui1BwxtcgqB0rcHw96RcirmBEj09A";
-        const response = await axios.get("/tag/api/admin/post", {
+        const response = await axios.get("/tag/api/admin/jobs", {
           headers: {
             token: token
           },
