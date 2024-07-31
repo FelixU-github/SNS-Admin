@@ -58,8 +58,9 @@
 
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from "vue";
+import { defineComponent, ref, onMounted, inject  } from "vue";
 import axios from "axios";
+
 
 interface DataItem {
   key: number;
@@ -162,14 +163,15 @@ export default defineComponent({
       showQuickJumper: true,
       showSizeChanger: false
     });
-
+    const token = inject('token');
     const fetchData = async (searchType: string, searchValue: string) => {
       loading.value = true;
       try {
-        const token = "eyJ0eXAiOiJ0b2tlbiIsImFsZyI6IkhTNTEyIn0.eyJzdWIiOiI5IiwiaWF0IjoxNzIyMjc0ODM5LCJleHAiOjE3MjI4Nzk2Mzl9.Jw2sno033CsgO75s5S9vWtbtG4hg2sA4EXjw2faJQnmnVKEm68jZHSHSgui1BwxtcgqB0rcHw96RcirmBEj09A";
+        
+        // const token = "eyJ0eXAiOiJ0b2tlbiIsImFsZyI6IkhTNTEyIn0.eyJzdWIiOiI5IiwiaWF0IjoxNzIyMjc0ODM5LCJleHAiOjE3MjI4Nzk2Mzl9.Jw2sno033CsgO75s5S9vWtbtG4hg2sA4EXjw2faJQnmnVKEm68jZHSHSgui1BwxtcgqB0rcHw96RcirmBEj09A";
         const response = await axios.get("/tag/api/admin/users", {
           headers: {
-            token: token
+            token: token.value
           },
           params: {
             page: pagination.value.current,
@@ -200,10 +202,10 @@ export default defineComponent({
 
     const fetchUserDetails = async (userId: number) => {
       try {
-        const token = "eyJ0eXAiOiJ0b2tlbiIsImFsZyI6IkhTNTEyIn0.eyJzdWIiOiI5IiwiaWF0IjoxNzIyMjc0ODM5LCJleHAiOjE3MjI4Nzk2Mzl9.Jw2sno033CsgO75s5S9vWtbtG4hg2sA4EXjw2faJQnmnVKEm68jZHSHSgui1BwxtcgqB0rcHw96RcirmBEj09A";
+        
         const response = await axios.get(`/tag/api/admin/users/${userId}`, {
           headers: {
-            token: token
+            token: token.value
           }
         });
         const { code, data, msg } = response.data;
@@ -219,10 +221,10 @@ export default defineComponent({
 
     const changeStatus = async (record: DataItem, status: string) => {
       try {
-        const token = "eyJ0eXAiOiJ0b2tlbiIsImFsZyI6IkhTNTEyIn0.eyJzdWIiOiI5IiwiaWF0IjoxNzIyMjc0ODM5LCJleHAiOjE3MjI4Nzk2Mzl9.Jw2sno033CsgO75s5S9vWtbtG4hg2sA4EXjw2faJQnmnVKEm68jZHSHSgui1BwxtcgqB0rcHw96RcirmBEj09A";
+        
         const response = await axios.put(`/tag/api/admin/users`, null, {
           headers: {
-            token: token
+            token: token.value
           },
           params: {
             userId: record.userId,

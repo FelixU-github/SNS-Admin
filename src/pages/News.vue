@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts" name="News">
-    import { reactive } from 'vue';
+    import { reactive ,inject} from 'vue';
 
     const newslist = reactive([
         {

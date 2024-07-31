@@ -65,7 +65,7 @@
   </template>
 
   <script setup>
-  import { onMounted, ref } from 'vue';
+  import { onMounted, ref ,inject} from 'vue';
   import NotesTable from '../componments/NotesTable.vue';
   import NotesCom from '@/componments/NotesCom.vue';
   import axios from 'axios';
@@ -110,10 +110,10 @@
       });
     };
 
-  
+    const token = inject('token');
 
-  const token = 
-    ref('eyJ0eXAiOiJ0b2tlbiIsImFsZyI6IkhTNTEyIn0.eyJzdWIiOiI5IiwiaWF0IjoxNzIyMjc0ODM5LCJleHAiOjE3MjI4Nzk2Mzl9.Jw2sno033CsgO75s5S9vWtbtG4hg2sA4EXjw2faJQnmnVKEm68jZHSHSgui1BwxtcgqB0rcHw96RcirmBEj09A');
+  // const token = 
+  //   ref('eyJ0eXAiOiJ0b2tlbiIsImFsZyI6IkhTNTEyIn0.eyJzdWIiOiI5IiwiaWF0IjoxNzIyMjc0ODM5LCJleHAiOjE3MjI4Nzk2Mzl9.Jw2sno033CsgO75s5S9vWtbtG4hg2sA4EXjw2faJQnmnVKEm68jZHSHSgui1BwxtcgqB0rcHw96RcirmBEj09A');
 
   const fetchData = () => {
     selectNoyes(1, 30);
