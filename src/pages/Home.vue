@@ -28,7 +28,6 @@ import LineChart from "@/componments/LineChart.vue";
 import MyChart from "@/componments/MyChart.vue";
 import FloatButton from "@/componments/FloatButton.vue";
 import { Carousel } from "ant-design-vue";
-import Zouma  from "@/componments/Zouma.vue";
 import DataChart from "@/componments/DataChart.vue";
 
 
