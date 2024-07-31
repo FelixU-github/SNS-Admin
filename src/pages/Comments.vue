@@ -1,18 +1,23 @@
 <template>
+  <div class="dashboard-container">
+    
+    <div class="header">
+      <h3>评论管理台 （根据标题或发布人昵称查询）</h3>
+    </div>
+    <hr>
+
   <div>
     <div class="container">
       <div class="searchbar">
         <select v-model="searchType" style="margin-right: 10px;">
-          <option value="username">用户名</option>
+          <option value="title">博文标题</option>
           <option value="nickname">用户昵称</option>
         </select>
         <input v-model="searchValue" placeholder="请输入搜索内容" style="margin-right: 10px;" />
         <button @click="handleSearch">搜索</button>
       </div>
     </div>
-    <div class="container">
-      <p>查询用户（根据用户名或昵称查询）</p>
-    </div>
+
     <br>
     <!-- 这里是表格 -->
     <a-table :columns="columns" :data-source="dataSource" :pagination="pagination" :loading="loading"
@@ -20,18 +25,16 @@
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'operation'">
           <div class="operation-buttons">
-            <button @click="handleDetails(record)">详情</button>
+
             <button @click="changeStatus(record, '正常')">正常</button>
             <button @click="changeStatus(record, '删除')">删除</button>
           </div>
         </template>
-        <template v-else-if="column.key === 'avatar'">
-          <img :src="record.avatar" alt="avatar" style="width: 50px; height: 50px;" />
-        </template>
+
       </template>
     </a-table>
 
-    <a-modal v-model:visible="isModalVisible" title="用户详情" @ok="handleOk" @cancel="handleCancel">
+    <!-- <a-modal v-model:visible="isModalVisible" title="用户详情" @ok="handleOk" @cancel="handleCancel">
       <p>用户ID: {{ userDetails.userId }}</p>
       <p>用户名: {{ userDetails.username }}</p>
       <p>用户昵称: {{ userDetails.nickname }}</p>
@@ -42,13 +45,10 @@
       <p>手机号: {{ userDetails.mobile }}</p>
       <p>性别: {{ userDetails.gender }}</p>
       <p>学校: {{ userDetails.school }}</p>
-    </a-modal>
+    </a-modal> -->
   </div>
+</div>
 
-  <!-- <div class="pagination-buttons">
-    <button @click="prevPage">上一页</button>
-    <button @click="nextPage">下一页</button>
-  </div> -->
 </template>
 
 
@@ -70,18 +70,18 @@ interface DataItem {
   nickname: string;
 }
 
-interface UserDetails {
-  userId: number;
-  username: string;
-  nickname: string;
-  avatar: string;
-  status: string;
-  createTime: string;
-  updateTime: string;
-  mobile: string;
-  gender: string;
-  school: string;
-}
+// interface UserDetails {
+//   userId: number;
+//   username: string;
+//   nickname: string;
+//   avatar: string;
+//   status: string;
+//   createTime: string;
+//   updateTime: string;
+//   mobile: string;
+//   gender: string;
+//   school: string;
+// }
 
 export default defineComponent({
   setup() {
@@ -172,21 +172,21 @@ export default defineComponent({
     ]);
     const dataSource = ref<DataItem[]>([]);
     const loading = ref(true);
-    const searchType = ref("username");
+    const searchType = ref("title");
     const searchValue = ref("");
     const isModalVisible = ref(false);
-    const userDetails = ref<UserDetails>({
-      userId: 0,
-      username: "",
-      nickname: "",
-      avatar: "",
-      status: "",
-      createTime: "",
-      updateTime: "",
-      mobile: "",
-      gender: "",
-      school: ""
-    });
+    // const userDetails = ref<UserDetails>({
+    //   userId: 0,
+    //   username: "",
+    //   nickname: "",
+    //   avatar: "",
+    //   status: "",
+    //   createTime: "",
+    //   updateTime: "",
+    //   mobile: "",
+    //   gender: "",
+    //   school: ""
+    // });
     const pagination = ref({
       current: 1,
       pageSize: 8,
@@ -200,7 +200,7 @@ export default defineComponent({
       loading.value = true;
       try {
         const token = "eyJ0eXAiOiJ0b2tlbiIsImFsZyI6IkhTNTEyIn0.eyJzdWIiOiI5IiwiaWF0IjoxNzIyMjc0ODM5LCJleHAiOjE3MjI4Nzk2Mzl9.Jw2sno033CsgO75s5S9vWtbtG4hg2sA4EXjw2faJQnmnVKEm68jZHSHSgui1BwxtcgqB0rcHw96RcirmBEj09A";
-        const response = await axios.get("/tag/api/admin/post", {
+        const response = await axios.get("/tag/api/admin/comments", {
           headers: {
             token: token
           },
@@ -236,24 +236,24 @@ export default defineComponent({
       }
     };
 
-    const fetchUserDetails = async (postId: number) => {
-      try {
-        const token = "eyJ0eXAiOiJ0b2tlbiIsImFsZyI6IkhTNTEyIn0.eyJzdWIiOiI5IiwiaWF0IjoxNzIyMjc0ODM5LCJleHAiOjE3MjI4Nzk2Mzl9.Jw2sno033CsgO75s5S9vWtbtG4hg2sA4EXjw2faJQnmnVKEm68jZHSHSgui1BwxtcgqB0rcHw96RcirmBEj09A";
-        const response = await axios.get(`/tag/api/admin/users/${postId}`, {
-          headers: {
-            token: token
-          }
-        });
-        const { code, data, msg } = response.data;
-        if (code === 200) {
-          userDetails.value = data;
-        } else {
-          console.error("获取用户详情失败:", code, msg);
-        }
-      } catch (error) {
-        console.error("请求用户详情失败:", error);
-      }
-    };
+    // const fetchUserDetails = async (postId: number) => {
+    //   try {
+    //     const token = "eyJ0eXAiOiJ0b2tlbiIsImFsZyI6IkhTNTEyIn0.eyJzdWIiOiI5IiwiaWF0IjoxNzIyMjc0ODM5LCJleHAiOjE3MjI4Nzk2Mzl9.Jw2sno033CsgO75s5S9vWtbtG4hg2sA4EXjw2faJQnmnVKEm68jZHSHSgui1BwxtcgqB0rcHw96RcirmBEj09A";
+    //     const response = await axios.get(`/tag/api/admin/users/${postId}`, {
+    //       headers: {
+    //         token: token
+    //       }
+    //     });
+    //     const { code, data, msg } = response.data;
+    //     if (code === 200) {
+    //       userDetails.value = data;
+    //     } else {
+    //       console.error("获取用户详情失败:", code, msg);
+    //     }
+    //   } catch (error) {
+    //     console.error("请求用户详情失败:", error);
+    //   }
+    // };
 
     const changeStatus = async (record: DataItem, status: string) => {
       try {
@@ -283,10 +283,10 @@ export default defineComponent({
       fetchData(searchType.value, searchValue.value);
     };
 
-    const handleDetails = (record: DataItem) => {
-      fetchUserDetails(record.postId);
-      isModalVisible.value = true;
-    };
+    // const handleDetails = (record: DataItem) => {
+    //   fetchUserDetails(record.postId);
+    //   isModalVisible.value = true;
+    // };
 
     const handleOk = () => {
       isModalVisible.value = false;
@@ -320,12 +320,12 @@ export default defineComponent({
     return {
       dataSource,
       columns,
-      handleDetails,
+      // handleDetails,
       handleSearch,
       searchType,
       searchValue,
       isModalVisible,
-      userDetails,
+      // userDetails,
       handleOk,
       handleCancel,
       loading,
@@ -367,5 +367,12 @@ export default defineComponent({
   display: flex;
   justify-content: space-evenly;
 
+}
+
+.dashboard-container {
+  border: 2px solid #ccc; /* 添加边框 */
+  background-color: #ffffff; /* 添加背景色 */
+  padding: 20px; /* 添加内边距 */
+  border-radius: 10px; /* 添加圆角 */
 }
 </style>
