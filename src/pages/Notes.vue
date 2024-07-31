@@ -186,6 +186,7 @@
       console.error("请求失败:", error);
     } finally {
       loading.value = false;
+      visible1.value = false;
       value1.value = '';
       value2.value = '';
     }
