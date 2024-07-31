@@ -1,4 +1,11 @@
 <template>
+  <div class="dashboard-container">
+    <div class="header">
+      <h3>用户管理台 查询用户（根据用户名或昵称查询）</h3>
+    </div>
+    <hr>
+  
+  
   <div>
     <div class="container">
       <div class="searchbar">
@@ -9,10 +16,11 @@
         <input v-model="searchValue" placeholder="请输入搜索内容" style="margin-right: 10px;" />
         <button @click="handleSearch">搜索</button>
       </div>
+      
     </div>
-    <div class="container">
+    <!-- <div class="container">
       <p>查询用户（根据用户名或昵称查询）</p>
-    </div>
+    </div> -->
     <br>
     <!-- 这里是表格 -->
     <a-table :columns="columns" :data-source="dataSource" :pagination="pagination" :loading="loading"
@@ -44,18 +52,14 @@
       <p>学校: {{ userDetails.school }}</p>
     </a-modal>
   </div>
+</div>
 
-  <!-- <div class="pagination-buttons">
-    <button @click="prevPage">上一页</button>
-    <button @click="nextPage">下一页</button>
-  </div> -->
 </template>
 
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
 import axios from "axios";
-import selector from "echarts/types/src/component/brush/selector.js";
 
 interface DataItem {
   key: number;
@@ -326,4 +330,13 @@ export default defineComponent({
   justify-content: space-evenly;
 
 }
+
+.dashboard-container {
+  border: 2px solid #ccc; /* 添加边框 */
+  background-color: #ffffff; /* 添加背景色 */
+  padding: 20px; /* 添加内边距 */
+  border-radius: 10px; /* 添加圆角 */
+}
+
+
 </style>

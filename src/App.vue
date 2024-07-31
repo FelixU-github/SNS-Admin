@@ -55,7 +55,7 @@
 
 
 
-<script lang="ts" setup name="App">
+<script setup name="App">
     import { RouterView,RouterLink } from 'vue-router';
     import Menu from './pages/Menu.vue'
     import avatar from './avatar/avatar.vue'
