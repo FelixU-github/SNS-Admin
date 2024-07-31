@@ -10,6 +10,7 @@ import Job from '@/pages/Job.vue'
 import Posts from '@/pages/Posts.vue'
 import Comments from '@/pages/Comments.vue'
 import Acitivity from '@/pages/Acitivity.vue'
+import Resource from '@/pages/Resource.vue'
 
 
 const router = createRouter({
@@ -45,6 +46,10 @@ const router = createRouter({
         {
             path:'/users',
             component: Users
+        },
+        {
+            path:'/resource',
+            component: Resource
         },
 
         {
