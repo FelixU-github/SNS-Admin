@@ -8,30 +8,18 @@
         @search="onSearch(1, 20, value)"
       />
     </a-space>
-    <a-button @click="showDrawer" type="primary" shape="round" style=
-      "margin-left: 30px; 
-      background-color: aquamarine;
-      color: black;
-      font-weight: 700;
-      font-family: 幼圆;">
-      发布公告
-    </a-button>
   </template>
   
   <script setup>
   import { defineProps, ref } from 'vue';
 
   const props = defineProps({
-    showDrawer: Function,
-    selectNoyes: Function,
+    selectRes: Function,
   });
   //搜索信息
   const value = ref('');
-  const showDrawer = () => {
-    props.showDrawer();
-  };
   const onSearch = (page, pageSize, title) => {
-    props.selectNoyes(page, pageSize, title);
+    props.selectRes(page, pageSize, title);
     value.value = '';
   };
   </script>
