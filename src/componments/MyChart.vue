@@ -1,47 +1,74 @@
 <template>
-  <!-- 这里定义了一个用于绘制图表的 DOM 容器 -->
-  <div id="main" style="width: 600px; height: 400px;"></div>
+  <div id="main" style="width: 100%; height: 100%;"></div>
 </template>
 
-<script lang="ts" setup>
-import { onMounted } from 'vue';
-// 引入 ECharts 库
+<script setup>
+import { ref, onMounted } from 'vue';
 import * as echarts from 'echarts';
+import axios from 'axios';
 
-// 在组件挂载后初始化 ECharts 图表
-onMounted(() => {
-  // 获取 DOM 容器
-  var chartDom = document.getElementById('main');
-  // 确保获取到 DOM 容器后再进行初始化
-  if (chartDom) {
-    // 初始化 ECharts 实例
-    var myChart = echarts.init(chartDom);
-    // 定义图表的配置项和数据
-    var option = {
+const fetchData = async () => {
+  try {
+      const token = "eyJ0eXAiOiJ0b2tlbiIsImFsZyI6IkhTNTEyIn0.eyJzdWIiOiI5IiwiaWF0IjoxNzIyMjc0ODM5LCJleHAiOjE3MjI4Nzk2Mzl9.Jw2sno033CsgO75s5S9vWtbtG4hg2sA4EXjw2faJQnmnVKEm68jZHSHSgui1BwxtcgqB0rcHw96RcirmBEj09A";
+      const response = await axios.get('/tag/api/admin/users/sum/daily', {
+          headers: {
+              token: token
+          }
+      });
+
+      if (response.data.code === 200) {
+          const data = response.data.data;
+          return data.slice(-30);
+      } else {
+          console.error('获取数据失败:', response.data.msg);
+          return [];
+      }
+  } catch (error) {
+      console.error('请求失败:', error);
+      return [];
+  }
+};
+
+onMounted(async () => {
+  const chartDom = document.getElementById('main');
+  const myChart = echarts.init(chartDom);
+
+  const data = await fetchData();
+
+  const dates = data.map(item => item.date);
+  const counts = data.map(item => item.count);
+
+  const option = {
+      title: {
+          text: '          本月新增用户数量（实时数据）'
+      },
       xAxis: {
-        type: 'category',
-        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+          type: 'category',
+          data: dates
       },
       yAxis: {
-        type: 'value'
+          type: 'value'
       },
       series: [
-        {
-          data: [150, 230, 224, 218, 135, 147, 210],
-          type: 'line'
-        }
+          {
+              data: counts,
+              type: 'line',
+              smooth: true
+          }
       ]
-    };
-    // 使用刚指定的配置项和数据显示图表
-    myChart.setOption(option);
-  }
+  };
+
+  myChart.setOption(option);
+
+  window.addEventListener('resize', () => {
+      myChart.resize();
+  });
 });
 </script>
 
 <style scoped>
-/* 为图表容器设置样式 */
 #main {
   width: 100%;
-  height: 100%;
+  height: 400px;
 }
 </style>
