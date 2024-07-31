@@ -55,7 +55,6 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
 import axios from "axios";
-import selector from "echarts/types/src/component/brush/selector.js";
 
 interface DataItem {
   key: number;
