@@ -38,13 +38,6 @@
           </a-button>
         </template>
     </template>
-    <template #expandedRowRender="{ record }">
-      <div>
-        <a-card :title="record.title">
-          {{ record.content }}
-        </a-card>
-      </div>
-    </template>
   </a-table>
 </template>
 
