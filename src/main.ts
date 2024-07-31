@@ -11,6 +11,7 @@ import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/reset.css';
 
 
+
 // 创建应用
 const app = createApp(App);
 // 引入 Antd
@@ -19,6 +20,9 @@ app.use(Antd);
 app.use(router);
 // 挂载应用
 app.mount("#app");
+
+
+
 
 // app.use(ElementPlus)
 // app.mount('#app')
