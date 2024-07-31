@@ -1,72 +1,371 @@
 <template>
-  <a-space>
-    <icon :style="{ color: 'hotpink' }">
-      <template #component>
-        <svg width="1em" height="1em" fill="currentColor" viewBox="0 0 1024 1024">
-          <path
-            d="M923 283.6c-13.4-31.1-32.6-58.9-56.9-82.8-24.3-23.8-52.5-42.4-84-55.5-32.5-13.5-66.9-20.3-102.4-20.3-49.3 0-97.4 13.5-139.2 39-10 6.1-19.5 12.8-28.5 20.1-9-7.3-18.5-14-28.5-20.1-41.8-25.5-89.9-39-139.2-39-35.5 0-69.9 6.8-102.4 20.3-31.4 13-59.7 31.7-84 55.5-24.4 23.9-43.5 51.7-56.9 82.8-13.9 32.3-21 66.6-21 101.9 0 33.3 6.8 68 20.3 103.3 11.3 29.5 27.5 60.1 48.2 91 32.8 48.9 77.9 99.9 133.9 151.6 92.8 85.7 184.7 144.9 188.6 147.3l23.7 15.2c10.5 6.7 24 6.7 34.5 0l23.7-15.2c3.9-2.5 95.7-61.6 188.6-147.3 56-51.7 101.1-102.7 133.9-151.6 20.7-30.9 37-61.5 48.2-91 13.5-35.3 20.3-70 20.3-103.3 0.1-35.3-7-69.6-20.9-101.9z"
-          />
-        </svg>
+  <div>
+    <div class="container">
+      <div class="searchbar">
+        <select v-model="searchType" style="margin-right: 10px;">
+          <option value="username">用户名</option>
+          <option value="nickname">用户昵称</option>
+        </select>
+        <input v-model="searchValue" placeholder="请输入搜索内容" style="margin-right: 10px;" />
+        <button @click="handleSearch">搜索</button>
+      </div>
+    </div>
+    <div class="container">
+      <p>查询用户（根据用户名或昵称查询）</p>
+    </div>
+    <br>
+    <!-- 这里是表格 -->
+    <a-table :columns="columns" :data-source="dataSource" :pagination="pagination" :loading="loading"
+      :scroll="{ y: 500, x: 100 }" @change="handleTableChange">
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'operation'">
+          <div class="operation-buttons">
+            <button @click="handleDetails(record)">详情</button>
+            <button @click="changeStatus(record, '正常')">正常</button>
+            <button @click="changeStatus(record, '删除')">删除</button>
+          </div>
+        </template>
+        <template v-else-if="column.key === 'avatar'">
+          <img :src="record.avatar" alt="avatar" style="width: 50px; height: 50px;" />
+        </template>
       </template>
-    </icon>
+    </a-table>
 
-    <icon :style="{ fontSize: '32px' }">
-      <template #component="svgProps">
-        <svg viewBox="0 0 1024 1024" width="1em" height="1em" fill="currentColor" v-bind="svgProps">
-          <path
-            d="M99.096 315.634s-82.58-64.032-82.58-132.13c0-66.064 33.032-165.162 148.646-148.646 83.37 11.91 99.096 165.162 99.096 165.162l-165.162 115.614zM924.906 315.634s82.58-64.032 82.58-132.13c0-66.064-33.032-165.162-148.646-148.646-83.37 11.91-99.096 165.162-99.096 165.162l165.162 115.614z"
-            fill="#6B676E"
-            p-id="1143"
-          />
-          <path
-            d="M1024 561.548c0 264.526-229.23 429.42-512.002 429.42S0 826.076 0 561.548 283.96 66.064 512.002 66.064 1024 297.022 1024 561.548z"
-            fill="#FFEBD2"
-            p-id="1144"
-          />
-          <path
-            d="M330.324 842.126c0 82.096 81.34 148.646 181.678 148.646s181.678-66.55 181.678-148.646H330.324z"
-            fill="#E9D7C3"
-            p-id="1145"
-          />
-          <path
-            d="M644.13 611.098C594.582 528.516 561.55 512 512.002 512c-49.548 0-82.58 16.516-132.13 99.096-42.488 70.814-78.73 211.264-49.548 247.742 66.064 82.58 165.162 33.032 181.678 33.032 16.516 0 115.614 49.548 181.678-33.032 29.18-36.476-7.064-176.93-49.55-247.74z"
-            fill="#FFFFFF"
-            p-id="1146"
-          />
-          <path
-            d="M611.098 495.484c0-45.608 36.974-82.58 82.58-82.58 49.548 0 198.194 99.098 198.194 165.162s-79.934 144.904-148.646 99.096c-49.548-33.032-132.128-148.646-132.128-181.678zM412.904 495.484c0-45.608-36.974-82.58-82.58-82.58-49.548 0-198.194 99.098-198.194 165.162s79.934 144.904 148.646 99.096c49.548-33.032 132.128-148.646 132.128-181.678z"
-            fill="#6B676E"
-            p-id="1147"
-          />
-          <path
-            d="M512.002 726.622c-30.06 0-115.614 5.668-115.614 33.032 0 49.638 105.484 85.24 115.614 82.58 10.128 2.66 115.614-32.944 115.614-82.58-0.002-27.366-85.556-33.032-115.614-33.032z"
-            fill="#464655"
-            p-id="1148"
-          />
-          <path
-            d="M330.324 495.484m-33.032 0a33.032 33.032 0 1 0 66.064 0 33.032 33.032 0 1 0-66.064 0Z"
-            fill="#464655"
-            p-id="1149"
-          />
-          <path
-            d="M693.678 495.484m-33.032 0a33.032 33.032 0 1 0 66.064 0 33.032 33.032 0 1 0-66.064 0Z"
-            fill="#464655"
-            p-id="1150"
-          />
-        </svg>
-      </template>
-    </icon>
-    <icon>
-      <template #component><HomeOutlined /></template>
-    </icon>
-    <HomeOutlined />
-  </a-space>
+    <a-modal v-model:visible="isModalVisible" title="用户详情" @ok="handleOk" @cancel="handleCancel">
+      <p>用户ID: {{ userDetails.userId }}</p>
+      <p>用户名: {{ userDetails.username }}</p>
+      <p>用户昵称: {{ userDetails.nickname }}</p>
+      <p>头像: <img :src="userDetails.avatar" alt="avatar" style="width: 50px; height: 50px;" /></p>
+      <p>用户状态: {{ userDetails.status }}</p>
+      <p>创建时间: {{ userDetails.createTime }}</p>
+      <p>更新时间: {{ userDetails.updateTime }}</p>
+      <p>手机号: {{ userDetails.mobile }}</p>
+      <p>性别: {{ userDetails.gender }}</p>
+      <p>学校: {{ userDetails.school }}</p>
+    </a-modal>
+  </div>
+
+  <!-- <div class="pagination-buttons">
+    <button @click="prevPage">上一页</button>
+    <button @click="nextPage">下一页</button>
+  </div> -->
 </template>
-<script lang="ts" setup>
-import Icon, { HomeOutlined } from '@ant-design/icons-vue';
+
+
+<script lang="ts">
+import { defineComponent, ref, onMounted } from "vue";
+import axios from "axios";
+
+
+interface DataItem {
+  postId: number;
+  uid: number;
+  categoryName: string;
+  title: string;
+  content: string;
+  readCount: number;
+  postTop: string;
+  createTime: string;
+  status: string;
+  nickname: string;
+}
+
+interface UserDetails {
+  userId: number;
+  username: string;
+  nickname: string;
+  avatar: string;
+  status: string;
+  createTime: string;
+  updateTime: string;
+  mobile: string;
+  gender: string;
+  school: string;
+}
+
+export default defineComponent({
+  setup() {
+    const columns = ref([
+      {
+        title: "博文id",
+        dataIndex: "postId",
+        key: "postId",
+        fixed: "left",
+        width: 100,
+        resizable: true,
+        align: "center"
+      },
+      {
+        title: "用户id",
+        dataIndex: "uid",
+        key: "uid",
+        width: 100,
+        resizable: false,
+        align: "center"
+      },
+      {
+        title: "用户昵称",
+        dataIndex: "nickname",
+        key: "nickname",
+        width: 100,
+        resizable: false,
+        align: "center"
+      },
+      {
+        title: "博文分类",
+        dataIndex: "categoryName",
+        key: "categoryName",
+        width: 100,
+        resizable: false,
+        align: "center"
+      },
+      {
+        title: "博文标题",
+        dataIndex: "title",
+        key: "title",
+        width: 150,
+        resizable: false,
+        align: "center"
+      },
+      {
+        title: "博文内容",
+        dataIndex: "content",
+        key: "content",
+        width: 200,
+        resizable: false,
+        align: "center"
+      },
+      {
+        title: "阅读量",
+        dataIndex: "readCount",
+        key: "readCount",
+        width: 100,
+        resizable: false,
+        align: "center"
+
+      },
+
+      {
+        title: "创建时间",
+        dataIndex: "createTime",
+        key: "createTime",
+        width: 150,
+        resizable: false,
+        align: "center"
+      },
+      {
+        title: "博文状态",
+        dataIndex: "status",
+        key: "status",
+        width: 100,
+        resizable: false,
+        align: "center"
+      },
+      {
+        title: "操作",
+        key: "operation",
+        fixed: "right",
+        width: 150,
+        resizable: true,
+        align: "center"
+      }
+    ]);
+    const dataSource = ref<DataItem[]>([]);
+    const loading = ref(true);
+    const searchType = ref("username");
+    const searchValue = ref("");
+    const isModalVisible = ref(false);
+    const userDetails = ref<UserDetails>({
+      userId: 0,
+      username: "",
+      nickname: "",
+      avatar: "",
+      status: "",
+      createTime: "",
+      updateTime: "",
+      mobile: "",
+      gender: "",
+      school: ""
+    });
+    const pagination = ref({
+      current: 1,
+      pageSize: 8,
+      total: 0,
+      showTotal: (total: number) => `总共 ${total} 条`,
+      showQuickJumper: true,
+      showSizeChanger: false
+    });
+
+    const fetchData = async (searchType: string, searchValue: string) => {
+      loading.value = true;
+      try {
+        const token = "eyJ0eXAiOiJ0b2tlbiIsImFsZyI6IkhTNTEyIn0.eyJzdWIiOiI5IiwiaWF0IjoxNzIyMjc0ODM5LCJleHAiOjE3MjI4Nzk2Mzl9.Jw2sno033CsgO75s5S9vWtbtG4hg2sA4EXjw2faJQnmnVKEm68jZHSHSgui1BwxtcgqB0rcHw96RcirmBEj09A";
+        const response = await axios.get("/tag/api/admin/post", {
+          headers: {
+            token: token
+          },
+          params: {
+            page: pagination.value.current,
+            pageSize: pagination.value.pageSize,
+            [searchType]: searchValue
+          }
+        });
+        const { code, data, msg } = response.data;
+        if (code === 200) {
+          dataSource.value = data.rows.map((row: any) => ({
+            postId: row.postId,
+            uid: row.uid,
+            categoryName: row.categoryName,
+            title: row.title,
+            content: row.content,
+            readCount: row.readCount,
+            postTop: row.postTop,
+            createTime: row.createTime,
+            status: row.status,
+            nickname: row.nickname
+
+          }));
+          pagination.value.total = data.total;
+        } else {
+          console.error("获取数据失败:", code, msg);
+        }
+      } catch (error) {
+        console.error("请求失败:", error);
+      } finally {
+        loading.value = false;
+      }
+    };
+
+    const fetchUserDetails = async (postId: number) => {
+      try {
+        const token = "eyJ0eXAiOiJ0b2tlbiIsImFsZyI6IkhTNTEyIn0.eyJzdWIiOiI5IiwiaWF0IjoxNzIyMjc0ODM5LCJleHAiOjE3MjI4Nzk2Mzl9.Jw2sno033CsgO75s5S9vWtbtG4hg2sA4EXjw2faJQnmnVKEm68jZHSHSgui1BwxtcgqB0rcHw96RcirmBEj09A";
+        const response = await axios.get(`/tag/api/admin/users/${postId}`, {
+          headers: {
+            token: token
+          }
+        });
+        const { code, data, msg } = response.data;
+        if (code === 200) {
+          userDetails.value = data;
+        } else {
+          console.error("获取用户详情失败:", code, msg);
+        }
+      } catch (error) {
+        console.error("请求用户详情失败:", error);
+      }
+    };
+
+    const changeStatus = async (record: DataItem, status: string) => {
+      try {
+        const token = "eyJ0eXAiOiJ0b2tlbiIsImFsZyI6IkhTNTEyIn0.eyJzdWIiOiI5IiwiaWF0IjoxNzIyMjc0ODM5LCJleHAiOjE3MjI4Nzk2Mzl9.Jw2sno033CsgO75s5S9vWtbtG4hg2sA4EXjw2faJQnmnVKEm68jZHSHSgui1BwxtcgqB0rcHw96RcirmBEj09A";
+        const response = await axios.put(`/tag/api/admin/post`,null, {
+          headers: {
+            token: token
+          },
+          params: {
+            postId: record.postId,
+            status: status
+          }
+        });
+        const { code, msg } = response.data;
+        if (code === 200) {
+          fetchData(searchType.value, searchValue.value);
+        } else {
+          console.error("更改状态失败:", code, msg);
+        }
+      } catch (error) {
+        console.error("请求更改状态失败:", error);
+      }
+    };
+
+    const handleSearch = () => {
+      pagination.value.current = 1; // 重置到第一页
+      fetchData(searchType.value, searchValue.value);
+    };
+
+    const handleDetails = (record: DataItem) => {
+      fetchUserDetails(record.postId);
+      isModalVisible.value = true;
+    };
+
+    const handleOk = () => {
+      isModalVisible.value = false;
+    };
+
+    const handleCancel = () => {
+      isModalVisible.value = false;
+    };
+
+    const handleTableChange = (paginationConfig: any) => {
+      pagination.value.current = paginationConfig.current;
+      fetchData(searchType.value, searchValue.value);
+    };
+
+    const prevPage = () => {
+      if (pagination.value.current > 1) {
+        pagination.value.current -= 1;
+        fetchData(searchType.value, searchValue.value);
+      }
+    };
+
+    const nextPage = () => {
+      if (pagination.value.current < Math.ceil(pagination.value.total / pagination.value.pageSize)) {
+        pagination.value.current += 1;
+        fetchData(searchType.value, searchValue.value);
+      }
+    };
+
+    onMounted(() => fetchData(searchType.value, searchValue.value));
+
+    return {
+      dataSource,
+      columns,
+      handleDetails,
+      handleSearch,
+      searchType,
+      searchValue,
+      isModalVisible,
+      userDetails,
+      handleOk,
+      handleCancel,
+      loading,
+      changeStatus,
+      pagination,
+      handleTableChange,
+      prevPage,
+      nextPage
+    };
+  }
+});
+
 </script>
+
+
 <style scoped>
-.custom-icons-list :deep(.anticon) {
-  margin-right: 6px;
+.container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+
+}
+
+.pagination-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  width: 100%;
+  margin-left: auto;
+  padding-right: 20px;
+}
+
+.searchbar {
+  display: flex;
+  gap: 10px;
+}
+
+.operation-buttons {
+  display: flex;
+  justify-content: space-evenly;
+
 }
 </style>

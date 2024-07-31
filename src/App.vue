@@ -1,20 +1,45 @@
 <template>
   <!-- 导航 -->
   <div class="navigate">
-    <h3 class="tittle" >树洞后台管理系统</h3>
-    <div class="separator"></div> <!-- 添加竖线的元素 -->
-    <a-button type="text"><RouterLink to="/home" active-class="active"> 首页 </RouterLink>
+    <a-button type="text" class="title-button-t">
+      <RouterLink to="/" class="title-link-t" active-class="active-t"> 树洞后台管理系统 </RouterLink>
     </a-button>
-    <a-button type="text"><RouterLink to="/users" class="active"> 用户管理 </RouterLink>
-    </a-button>
-    <a-button type="text"><RouterLink to="/posts" class="active"> 博文管理 </RouterLink></a-button>
-    <a-button type="text"><RouterLink to="/comments" class="active"> 评论管理 </RouterLink></a-button>
-    <a-button type="text"><RouterLink to="/activity" class="active"> 活动管理 </RouterLink></a-button>
-    <a-button type="text"><RouterLink to="/notes"> 公告管理 </RouterLink></a-button>
+
     <div class="separator"></div> <!-- 添加竖线的元素 -->
-    <avatar />
-    <a-button type="text">退出</a-button>
+    
+    <a-button type="text" class="title-button">
+      <RouterLink to="/users" class="title-link" active-class="active"> 用户管理 </RouterLink>
+    </a-button>
+
+    <a-button type="text" class="title-button">
+      <RouterLink to="/posts" class="title-link" active-class="active"> 博文管理 </RouterLink>
+    </a-button>
+    <a-button type="text" class="title-button">
+      <RouterLink to="/comments" class="title-link" active-class="active"> 评论管理 </RouterLink>
+    </a-button>
+    <a-button type="text" class="title-button">
+      <RouterLink to="/activity" class="title-link" active-class="active"> 活动管理 </RouterLink>
+    </a-button>
+    <a-button type="text" class="title-button">
+      <RouterLink to="/job" class="title-link" active-class="active"> 内推管理 </RouterLink>
+    </a-button>
+    <a-button type="text" class="title-button">
+      <RouterLink to="/notes" class="title-link" active-class="active"> 公告管理 </RouterLink>
+    </a-button>
+    <a-button type="text" class="title-button">
+      <RouterLink to="/resource" class="title-link" active-class="active"> 资源管理 </RouterLink>
+    </a-button>
+    <div class="separator"></div> <!-- 添加竖线的元素 -->
+    <div class="box">
+      <avatar />
+      <p></p>
+    </div>
+    <a-button type="text" class="title-button">
+      <RouterLink to="/surprise" class="title-link" active-class="active"> 退出 </RouterLink>
+    </a-button>
+
   </div>
+
   <div class="spcae">
     <br>
   </div>
@@ -47,7 +72,7 @@
   padding: 50px; /* 为容器添加左右内边距（可选） */
   height: 70px; /* 设置容器高度以示例效果 */
   box-shadow: 0 0 10px;
-  background-color: rgb(255, 255, 255);
+  background-color: rgb(250, 251, 252);
 
 }
 
@@ -70,7 +95,7 @@
     /* box-shadow: 0 0 10px; */
     width: 100%;
     height: 800px;
-    background-color: rgb(191, 191, 191);
+    background-color: rgb(255, 255, 255);
     
 }
 .header{
@@ -82,6 +107,26 @@
   height: 40px; /* 可以根据需要调整高度 */
   background-color: #000; /* 竖线的颜色，可以根据需要调整 */
   margin-right: 20px; /* 给按钮留出空间 */
+}
+.box {
+  display: flex;
+  flex-wrap: wrap;
+}
+.title-button .title-link {
+  color: #333 !important; /* 设置字体颜色 */
+}
+
+.title-button .title-link.active {
+  color: #adbdfc !important; /* 设置激活状态下的颜色并强制应用 */
+}
+
+.title-button-t .title-link-t {
+  font-weight: bold !important; /* 设置字体加粗 */
+  color: #333 !important; /* 设置字体颜色 */
+}
+
+.title-button-t .title-link-t.active-t {
+  color: #adbdfc !important; /* 设置激活状态下的颜色并强制应用 */
 }
 
 
