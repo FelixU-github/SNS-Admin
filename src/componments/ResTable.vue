@@ -8,7 +8,8 @@
         <template v-if="column.key === 'icon'">
           <folder-outlined style="font-size: 24px;"/>
         </template> 
-        <a href="#" v-if="column.key === 'resource'">{{ record.resource }}</a>
+        <a href="#" v-if="column.key === 'resource' && record.status === 0">{{ record.resource }}</a>
+        <a href="#" v-else-if="column.key === 'resource'" disabled>{{ record.resource }}</a>
         <template v-if="column.key === 'status' && record.status === 0">
           有效资源
         </template>
