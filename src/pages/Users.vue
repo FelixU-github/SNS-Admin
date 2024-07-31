@@ -26,7 +26,7 @@
           </div>
         </template>
         <template v-else-if="column.key === 'avatar'">
-          <img :src="record.avatar" alt="avatar" style="width: 50px; height: 50px;" />
+          <img :src="record.avatar" alt="avatar" style="width: 40px; height: 40px;" />
         </template>
       </template>
     </a-table>
