@@ -1,40 +1,48 @@
 <template>
   <div class="dashboard-container">
+    
     <div class="header">
       <h3>内推管理台 （根据标题或发布人昵称查询）</h3>
     </div>
     <hr>
-    <div>
-      <div class="container">
-        <div class="searchbar">
-          <select v-model="searchType" style="margin-right: 10px;">
-            <option value="title">内推 id</option>
-            <option value="nickname">用户昵称</option>
-          </select>
-          <input v-model="searchValue" placeholder="请输入搜索内容" style="margin-right: 10px;" />
-          <button @click="handleSearch">搜索</button>
-        </div>
+
+  <div>
+    <div class="container">
+      <div class="searchbar">
+        <select v-model="searchType" style="margin-right: 10px;">
+          <option value="title">内推 id</option>
+          <option value="nickname">用户昵称</option>
+        </select>
+        <input v-model="searchValue" placeholder="请输入搜索内容" style="margin-right: 10px;" />
+        <button @click="handleSearch">搜索</button>
       </div>
-      <br>
-      <!-- 这里是表格 -->
-      <a-table :columns="columns" :data-source="dataSource" :pagination="pagination" :loading="loading"
-        :scroll="{ y: 500, x: 100 }" @change="handleTableChange">
-        <template #bodyCell="{ column, record }">
-          <template v-if="column.key === 'operation'">
-            <div class="operation-buttons">
-              <button @click="changeStatus(record, '正常')">正常</button>
-              <button @click="changeStatus(record, '删除')">删除</button>
-            </div>
-          </template>
-        </template>
-      </a-table>
     </div>
+
+    <br>
+    <!-- 这里是表格 -->
+    <a-table :columns="columns" :data-source="dataSource" :pagination="pagination" :loading="loading"
+      :scroll="{ y: 500, x: 100 }" @change="handleTableChange">
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'operation'">
+          <div class="operation-buttons">
+
+            <button @click="changeStatus(record, '正常')">正常</button>
+            <button @click="changeStatus(record, '删除')">删除</button>
+          </div>
+        </template>
+
+      </template>
+    </a-table>
   </div>
+</div>
+
 </template>
 
+
 <script lang="ts">
-import { defineComponent, ref, onMounted, inject } from "vue";
+import { defineComponent, ref, onMounted,inject } from "vue";
 import axios from "axios";
+
 
 interface DataItem {
   postId: number;
@@ -53,7 +61,7 @@ export default defineComponent({
   setup() {
     const columns = ref([
       {
-        title: "内推id",
+        title: "博文id",
         dataIndex: "postId",
         key: "postId",
         fixed: "left",
@@ -153,7 +161,7 @@ export default defineComponent({
     const fetchData = async (searchType: string, searchValue: string) => {
       loading.value = true;
       try {
-
+        
         const response = await axios.get("/tag/api/admin/jobs", {
           headers: {
             token: token.value
@@ -191,10 +199,11 @@ export default defineComponent({
     };
 
 
+
     const changeStatus = async (record: DataItem, status: string) => {
       try {
-
-        const response = await axios.put(`/tag/api/admin/post`, null, {
+        
+        const response = await axios.put(`/tag/api/admin/jobs`,null, {
           headers: {
             token: token.value
           },
@@ -218,6 +227,11 @@ export default defineComponent({
       pagination.value.current = 1; // 重置到第一页
       fetchData(searchType.value, searchValue.value);
     };
+
+    // const handleDetails = (record: DataItem) => {
+    //   fetchUserDetails(record.postId);
+    //   isModalVisible.value = true;
+    // };
 
     const handleOk = () => {
       isModalVisible.value = false;
@@ -251,6 +265,7 @@ export default defineComponent({
     return {
       dataSource,
       columns,
+      // handleDetails,
       handleSearch,
       searchType,
       searchValue,
@@ -299,13 +314,9 @@ export default defineComponent({
 }
 
 .dashboard-container {
-  border: 2px solid #ccc;
-  /* 添加边框 */
-  background-color: #ffffff;
-  /* 添加背景色 */
-  padding: 20px;
-  /* 添加内边距 */
-  border-radius: 10px;
-  /* 添加圆角 */
+  border: 2px solid #ccc; /* 添加边框 */
+  background-color: #ffffff; /* 添加背景色 */
+  padding: 20px; /* 添加内边距 */
+  border-radius: 10px; /* 添加圆角 */
 }
 </style>
